@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Servicio CTFd
+  ctfd:
+    image: ctfd/ctfd:latest
+    container_name: ctfd
+    restart: unless-stopped
+    environment:
+      - UPLOAD_FOLDER=/var/uploads
+    volumes:
+      - ./ctfd_data:/var/uploads
+    expose:
+      - "8000"
+
+  # Proxy inverso Nginx
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/www:/usr/share/nginx/html
+    depends_on:
+      - ctfd
