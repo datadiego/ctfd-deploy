@@ -1,8 +1,13 @@
 #!/bin/bash
 
 # Configuración
-EMAIL="tu-email@example.com"
-DOMAIN="tu-dominio.com"
+EMAIL=$1
+DOMAIN=$2
+
+if [ -z "$EMAIL" ] || [ -z "$DOMAIN" ]; then
+    echo "❌ Uso: $0 <email> <dominio>"
+    exit 1
+fi
 
 # Paso 1: Instalación de dependencias
 echo "🔧 Instalando dependencias..."
@@ -32,11 +37,15 @@ echo "🔒 Ajustando permisos..."
 sudo chown $(whoami):$(whoami) ./nginx/certs/*
 chmod 600 ./nginx/certs/*
 
-# Paso 6: Docker Compose
-echo "🐳 Lanzando Docker Compose..."
-docker compose up -d
+# Paso 6: Generar nginx.conf
+echo "📝 Generando nginx.conf..."
+sed "s/ejemplo.com/$DOMAIN/g; s/wwww/www/g" nginx/nginx.conf.example > nginx/nginx.conf
 
-# Paso 7: Añadir renovación automática
+# Paso 7: Docker Compose
+echo "🐳 Lanzando Docker Compose..."
+docker-compose up -d
+
+# Paso 8: Añadir renovación automática
 echo "⏰ Configurando renovación automática de certificados..."
 (crontab -l ; echo "0 0 1 * * certbot renew && docker compose restart nginx") | crontab -
 
