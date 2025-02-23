@@ -10,8 +10,6 @@ services:
       - UPLOAD_FOLDER=/var/uploads
     volumes:
       - ./ctfd_data:/var/uploads
-      - ./themes:/opt/CTFd/CTFd/themes
-      - ./plugins:/opt/CTFd/CTFd/plugins
     expose:
       - "8000"
 
