@@ -47,6 +47,6 @@ docker-compose up -d
 
 # Paso 8: Añadir renovación automática
 echo "⏰ Configurando renovación automática de certificados..."
-(crontab -l ; echo "0 0 1 * * certbot renew && docker compose restart nginx") | crontab -
+(crontab -l ; echo "0 0 1 * * certbot renew && docker compose restart nginx") | crontab - # esto falla en root
 
 echo "✅ Todo listo. Tu CTFd debería estar disponible en https://$DOMAIN"
