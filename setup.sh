@@ -9,6 +9,11 @@ echo "🔧 Instalando dependencias..."
 sudo apt update
 sudo apt install -y docker docker-compose certbot
 
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw enable
+sudo ufw reload
+
 # Paso 2: Creación de carpetas
 echo "📁 Creando carpetas necesarias..."
 mkdir -p nginx/certs nginx/www ctfd_data
